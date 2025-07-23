@@ -6,12 +6,24 @@ function getNoteName(noteNumber: number): string {
     const octave = Math.floor(noteNumber / 12) - 1
     const note = names[noteNumber % 12]
 
-    return `${note}${octave}`
+    return `${note}/${octave}`
 }
 
 export default function Home() {
     const inputs: MIDIInput[] = []
     const [note, setNote] = createSignal<string[]>([])
+
+    const notes = () => {
+        const firstNote = note().length > 0 ? note() : ['b/4']
+        const duration = note().length > 0 ? 'q' : 'qr'
+
+        return [
+		    { keys: firstNote, duration: duration },
+		    { keys: ['b/4'], duration: 'qr' },
+		    { keys: ['b/4'], duration: 'qr' },
+		    { keys: ['b/4'], duration: 'qr' },
+        ]
+    };
 
     onMount(() => {
 
@@ -50,7 +62,7 @@ export default function Home() {
     return (
         <main class="text-center mx-auto text-gray-700 p-4">
             <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">{note()}</h1>
-            <Score />
+            <Score notes={notes()} />
         </main>
     );
 }

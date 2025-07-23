@@ -1,29 +1,42 @@
-import { onMount } from "solid-js";
-import VexFlow from "vexflow";
+import { createEffect, onMount } from "solid-js";
+import { Factory, Tickable } from "vexflow";
 
-export function Score() {
+export type Note = {
+    keys: string[],
+    duration: string
+}
+
+export function Score(props: { notes: Note[] }) {
     let container!: HTMLDivElement 
-    
-    onMount(() => {
-        const factory = new VexFlow.Factory({
-          renderer: { elementId: container.id, width: 500, height: 200 },
-        });
-        
-        const score = factory.EasyScore();
-        const system = factory.System();
 
-        system
-            .addStave({
-                voices: [
-                    score.voice(score.notes('C#5/q, B4, A4, G#4', { stem: 'up' })),
-                    score.voice(score.notes('C#4/h, C#4', { stem: 'down' })),
-                ],
-            })
-            .addClef('treble')
-            .addTimeSignature('4/4')
-        
+    const renderScore = () => {
+        container.innerHTML = "";
+        const factory = new Factory({
+          renderer: { elementId: container.id, width: 500, height: 500 }
+        });
+
+        const system = factory.System({ width: 400 });
+
+        const notes: Tickable[] = props.notes.map(note => {
+            return factory.StaveNote(note)
+        })
+        const voices = factory.Voice().addTickables(notes)
+
+        system.addStave({voices: [voices]})
+            .addClef("treble")
+            .addTimeSignature("4/4")
+            .setStyle({ strokeStyle: "white", fillStyle: "white" }); // pentagrama gris claro
+
+        notes.forEach(n => n.setStyle({
+          fillStyle: "#fff",    // blanco
+          strokeStyle: "#fff"   // blanco
+        }));
+
         factory.draw();
-    })
+    }
+    
+    onMount(renderScore)
+    createEffect(renderScore)
 
     return <div id="vexflow-container" ref={container} />
 }
