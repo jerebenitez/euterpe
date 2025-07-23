@@ -1,4 +1,5 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
+import { Score } from "~/components/score";
 
 function getNoteName(noteNumber: number): string {
     const names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -49,6 +50,7 @@ export default function Home() {
     return (
         <main class="text-center mx-auto text-gray-700 p-4">
             <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">{note()}</h1>
+            <Score />
         </main>
     );
 }
