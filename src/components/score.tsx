@@ -27,6 +27,12 @@ export function Score(props: { notes: Note[] }) {
             .addTimeSignature("4/4")
             .setStyle({ strokeStyle: "white", fillStyle: "white" }); // pentagrama gris claro
 
+        system.addStave({ voices: []  })
+            .addClef("bass")
+            .addTimeSignature("4/4")
+            .setStyle({ strokeStyle: "white", fillStyle: "white" }); // pentagrama gris claro
+
+
         notes.forEach(n => n.setStyle({
           fillStyle: "#fff",    // blanco
           strokeStyle: "#fff"   // blanco

@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import { MIDIController } from "~/components/midi-controller";
-import { Score } from "~/components/score";
+import { Score } from "~/components/easy-score";
 
 export default function Home() {
     const [note, setNote] = createSignal<string[]>([])
@@ -19,7 +19,7 @@ export default function Home() {
 
     return (
         <main class="text-center mx-auto text-gray-700 p-4">
-            <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">{note()}</h1>
+            <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">{note().length > 0 ? note() : "None"}</h1>
             <MIDIController setNotes={setNote}>
                 <Score notes={notes()} />
             </MIDIController>
